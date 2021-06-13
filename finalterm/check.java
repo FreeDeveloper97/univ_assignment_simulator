@@ -26,6 +26,7 @@ public class check extends ViewableAtomic
 	
 	protected msg_user msg_user;
 	protected msg_reserve msg_reserve;
+	protected msg_confirm msg_confirm;
 	
 
 	public check()
@@ -63,6 +64,7 @@ public class check extends ViewableAtomic
 		
 		msg_user = new msg_user("none", 0, 0);
 		msg_reserve = new msg_reserve("none", 0, 0, "none", new int[0][0], false);
+		msg_confirm = new msg_confirm("none", new int[0][0], new int[0][0], 0, 0, 0);
 		
 		holdIn("waitUser", INFINITY);
 	}
@@ -79,7 +81,7 @@ public class check extends ViewableAtomic
 					if(whatTodo == RESERVE) {
 						setAirplane();
 					}
-					printUserIds();
+					
 					holdIn("start", 0);
 				}
 			}
@@ -91,6 +93,7 @@ public class check extends ViewableAtomic
 				if (messageOnPort(x, "reserve_in", i)) {
 					msg_reserve = (msg_reserve)x.getValOnPort("reserve_in", i);
 					updateData();
+//					printSeats();
 					
 					holdIn("sent", 0);
 				}
@@ -109,10 +112,11 @@ public class check extends ViewableAtomic
 		
 		else if (phaseIs("waitConfirm")) {
 			for (int i = 0; i < x.getLength(); i++) {
-				
+				whatTodo = CONFIRM;
 				if (messageOnPort(x, "confirm_in", i)) {
+					msg_confirm = (msg_confirm)x.getValOnPort("confirm_in", i);
 					
-
+					holdIn("sent", 0);
 				}
 			}
 		}
@@ -130,8 +134,7 @@ public class check extends ViewableAtomic
 				holdIn("waitUser", INFINITY);
 			}
 			else if(whatTodo == CONFIRM) {
-//				holdIn("waitConfirm", INFINITY);
-				holdIn("waitUser", INFINITY);
+				holdIn("waitConfirm", INFINITY);
 			}
 		}
 		
@@ -169,15 +172,18 @@ public class check extends ViewableAtomic
 			}
 			
 			else if(whatTodo == CONFIRM) {
-				System.out.println("CONFIRM CKICK!");
-				m.add(makeContent("check_out", new msg_status(
-						"CONFIRM FINISH!", isFull)));
+				m.add(makeContent("confirm_out", new msg_confirm(
+						"User_"+msg_user.user_id+" : CONFIRM!", seatMap_A, seatMap_B, count_airA, count_airB, foodCount)));
 			}
 		}
 		else if(phaseIs("sent")) {
 			if(whatTodo == RESERVE) {
 				m.add(makeContent("check_out", new msg_status(
 						"RESERVE FINISH!", isFull)));
+			}
+			else if(whatTodo == CONFIRM) {
+				m.add(makeContent("check_out", new msg_status(
+						"CONFIRM FINISH!", isFull)));
 			}
 			
 		}
@@ -253,10 +259,6 @@ public class check extends ViewableAtomic
 		if(count_airA + count_airB == seatTotal_A + seatTotal_B) {
 			isFull = true;
 		}
-	}
-	
-	public void printUserIds() {
-		System.out.println(userIds);
 	}
 }
 

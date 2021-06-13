@@ -11,18 +11,23 @@ public class inhaAirplane extends ViewableDigraph
 		super("airplane");
     	
 		ViewableAtomic u = new user("user");
-		ViewableAtomic c = new check("check", seatTotal, seatTotal);
+		ViewableAtomic i = new check("check", seatTotal, seatTotal);
 		ViewableAtomic r = new reserve("reserve", seatTotal);
+		ViewableAtomic c = new confirm("confirm", seatTotal, seatTotal);
 		
 		add(u);
-		add(c);
+		add(i);
 		add(r);
+		add(c);
   
-		addCoupling(u, "user_out", c, "user_in");
-		addCoupling(c, "check_out", u, "check_in");
+		addCoupling(u, "user_out", i, "user_in");
+		addCoupling(i, "check_out", u, "check_in");
 		
-		addCoupling(c, "reserve_out", r, "check_in");
-		addCoupling(r, "out", c, "reserve_in");
+		addCoupling(i, "reserve_out", r, "check_in");
+		addCoupling(r, "out", i, "reserve_in");
+		
+		addCoupling(i, "confirm_out", c, "check_in");
+		addCoupling(c, "out", i, "confirm_in");
 		
 		
 		
@@ -39,6 +44,7 @@ public class inhaAirplane extends ViewableDigraph
         ((ViewableComponent)withName("user")).setPreferredLocation(new Point(40, 250));
         ((ViewableComponent)withName("check")).setPreferredLocation(new Point(250, 250));
         ((ViewableComponent)withName("reserve")).setPreferredLocation(new Point(600, 50));
+        ((ViewableComponent)withName("confirm")).setPreferredLocation(new Point(600, 200));
         
     }
 }

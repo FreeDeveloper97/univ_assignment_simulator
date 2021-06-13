@@ -77,7 +77,7 @@ public class user extends ViewableAtomic
 	
 	//algorithm 모음
 	public int getUser_id() {
-		return (int)(Math.random()*100 + 1); //1 ~ 100 난수 생성
+		return (int)(Math.random()*99 + 1); //1 ~ 99 난수 생성
 	}
 	
 	public int getAge() {
