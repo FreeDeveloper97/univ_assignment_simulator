@@ -72,6 +72,7 @@ public class reserve extends ViewableAtomic
 	{
 		message m = new message();
 		if (phaseIs("reserving")) {
+			System.out.println("   ---- reserved : "+whatAirplane+"-"+x+y+" ----");
 			m.add(makeContent("out", new msg_reserve(
 					"User_"+msg_reserve.user_id+" : "+whatAirplane+"-"+x+y, msg_reserve.user_id, 
 					msg_reserve.age, whatAirplane, seatMap, food)));

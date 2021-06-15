@@ -6,6 +6,7 @@ import Lab14.auction_msg;
 
 public class user extends ViewableAtomic
 {
+	protected int randomMax;
 	protected int user_id;
 	protected msg_user msg_user;
 	protected msg_status msg_status;
@@ -15,15 +16,16 @@ public class user extends ViewableAtomic
   
 	public user() 
 	{
-		this("user");
+		this("user", 400);
 	}
   
-	public user(String name)
+	public user(String name, int randomMax)
 	{
 		super(name);
    
 		addInport("check_in");
 		addOutport("user_out");
+		this.randomMax = randomMax;
 	}
   
 	public void initialize()
@@ -77,7 +79,7 @@ public class user extends ViewableAtomic
 	
 	//algorithm 모음
 	public int getUser_id() {
-		return (int)(Math.random()*99 + 1); //1 ~ 99 난수 생성
+		return (int)(Math.random()*randomMax + 1); //1 ~ 400 난수 생성
 	}
 	
 	public int getAge() {

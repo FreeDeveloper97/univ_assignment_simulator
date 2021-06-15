@@ -35,7 +35,7 @@ public class confirm extends ViewableAtomic
 		seatMap_A = new int[5][seatTotal_A/5];
 		seatMap_B = new int[5][seatTotal_B/5];
 		
-		msg_confirm = new msg_confirm("none", new int[0][0], new int[0][0], 0, 0, 0);
+		msg_confirm = new msg_confirm("none", new int[0][0], new int[0][0], 0, 0, 0, 0);
 		
 		holdIn("wait", INFINITY);
 	}
@@ -69,7 +69,7 @@ public class confirm extends ViewableAtomic
 		message m = new message();
 		if (phaseIs("confirming")) {
 			m.add(makeContent("out", new msg_confirm(
-					"CONFIRM FINISH", seatMap_A, seatMap_B, 0,0,0)));
+					"CONFIRM FINISH", seatMap_A, seatMap_B, 0,0,0,0)));
 		}
 		return m;
 	}
@@ -79,33 +79,33 @@ public class confirm extends ViewableAtomic
 		seatMap_A = msg_confirm.seatMap_A;
 		seatMap_B = msg_confirm.seatMap_B;
 		
-		System.out.println("-------Airplane__A-------");
+		System.out.println("----------Airplane_A----------");
 		for(int i=0; i<seatTotal_A/5; i++) {
 			for(int j=0; j<5; j++) {
 				if(seatMap_A[j][i] == 0) {
-					System.out.print("[---]");
+					System.out.print("[----]");
 				} else {
-					System.out.printf("[#%02d]", seatMap_A[j][i]);
+					System.out.printf("[#%03d]", seatMap_A[j][i]);
 				}
 			}
 			System.out.println();
 		}
 		System.out.println("Empty : " + (seatTotal_A-msg_confirm.count_airA));
-		System.out.println("Food : " + msg_confirm.foodCount+"\n");
+		System.out.println("Food : " + msg_confirm.foodCount_A);
 		
-		System.out.println("-------Airplane__B-------");
+		System.out.println("----------Airplane_B----------");
 		for(int i=0; i<seatTotal_B/5; i++) {
 			for(int j=0; j<5; j++) {
 				if(seatMap_B[j][i] == 0) {
-					System.out.print("[---]");
+					System.out.print("[----]");
 				} else {
-					System.out.printf("[#%02d]", seatMap_B[j][i]);
+					System.out.printf("[#%03d]", seatMap_B[j][i]);
 				}
 			}
 			System.out.println();
 		}
 		System.out.println("Empty : " + (seatTotal_B-msg_confirm.count_airB));
-		System.out.println("Food : " + msg_confirm.foodCount);
+		System.out.println("Food : " + msg_confirm.foodCount_B+"\n\n");
 	}
 }
 

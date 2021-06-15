@@ -4,32 +4,38 @@ import simView.*;
 
 public class inhaAirplane extends ViewableDigraph
 {
-	final int seatTotal = 15;
+	final int seatTotal = 40; //비행기의 총 좌석수 입니다 (5배수로 입력하시면 됩니다)
+	final int randomMax = 400; //userId 값의 random 크기 입니다.
+	// randomMax 값이 적을 경우 -> 동일id 값의 확률이 커지므로 confirm 확률이 커집니다.
+	// randomMax 값이 클 경우 -> 동일id 값의 확률이 작아지므로 confirm 확률이 작아집니다.
 	
 	public inhaAirplane()
 	{
 		super("airplane");
     	
-		ViewableAtomic u = new user("user");
-		ViewableAtomic i = new check("check", seatTotal, seatTotal);
-		ViewableAtomic r = new reserve("reserve", seatTotal);
-		ViewableAtomic c = new confirm("confirm", seatTotal, seatTotal);
+		ViewableAtomic us = new user("user", randomMax);
+		ViewableAtomic ck = new check("check", seatTotal, seatTotal);
+		ViewableAtomic Rs = new reserve("reserve", seatTotal);
+		ViewableAtomic Cf = new confirm("confirm", seatTotal, seatTotal);
+		ViewableAtomic Cl = new cancle("cancle", seatTotal, seatTotal);
 		
-		add(u);
-		add(i);
-		add(r);
-		add(c);
+		add(us);
+		add(ck);
+		add(Rs);
+		add(Cf);
+		add(Cl);
   
-		addCoupling(u, "user_out", i, "user_in");
-		addCoupling(i, "check_out", u, "check_in");
+		addCoupling(us, "user_out", ck, "user_in");
+		addCoupling(ck, "check_out", us, "check_in");
 		
-		addCoupling(i, "reserve_out", r, "check_in");
-		addCoupling(r, "out", i, "reserve_in");
+		addCoupling(ck, "reserve_out", Rs, "check_in");
+		addCoupling(Rs, "out", ck, "reserve_in");
 		
-		addCoupling(i, "confirm_out", c, "check_in");
-		addCoupling(c, "out", i, "confirm_in");
+		addCoupling(ck, "confirm_out", Cf, "check_in");
+		addCoupling(Cf, "out", ck, "confirm_in");
 		
-		
+		addCoupling(ck, "cancle_out", Cl, "check_in");
+		addCoupling(Cl, "out", ck, "cancle_in");
 		
 	}
 
@@ -40,11 +46,11 @@ public class inhaAirplane extends ViewableDigraph
      */
     public void layoutForSimView()
     {
-        preferredSize = new Dimension(988, 646);
-        ((ViewableComponent)withName("user")).setPreferredLocation(new Point(40, 250));
-        ((ViewableComponent)withName("check")).setPreferredLocation(new Point(250, 250));
-        ((ViewableComponent)withName("reserve")).setPreferredLocation(new Point(600, 50));
-        ((ViewableComponent)withName("confirm")).setPreferredLocation(new Point(600, 200));
-        
+        preferredSize = new Dimension(850, 400);
+        ((ViewableComponent)withName("user")).setPreferredLocation(new Point(20, 170));
+        ((ViewableComponent)withName("check")).setPreferredLocation(new Point(250, 170));
+        ((ViewableComponent)withName("reserve")).setPreferredLocation(new Point(600, 40));
+        ((ViewableComponent)withName("confirm")).setPreferredLocation(new Point(600, 170));
+        ((ViewableComponent)withName("cancle")).setPreferredLocation(new Point(600, 300));
     }
 }
